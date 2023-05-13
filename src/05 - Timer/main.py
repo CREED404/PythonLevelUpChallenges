@@ -1,34 +1,20 @@
 from random import randint
-from datetime import datetime
+import time
 
 def waiting_game():
   duration = randint(2,4)
   print(f"Your target time is {duration} seconds")
 
-  hasStarted = False
+  input("---Press Enter to Begin---")
+  start = time.perf_counter()
 
-  while True:
-    startMessage = "---Press Enter to Begin---"
-    endMessage = f"...Press Enter again after {duration} seconds..."
-    message = startMessage if not hasStarted else endMessage
-    
-    userInput = input(message)
+  input(f"...Press Enter again after {duration} seconds...")
+  elapsed = time.perf_counter() - start
 
-    if userInput == '':
-      if hasStarted:
-        endDate = datetime.now()
-        elapsedDelta = endDate - startDate
-
-        seconds = elapsedDelta.seconds + elapsedDelta.microseconds / 1_000_000
-        print(f"Elapsed time: {seconds: .3f} seconds")
-
-        if duration == seconds:
-          print("(Unbelievable! Perfect timing!)")
-        elif duration < seconds:
-          print(f"({seconds - duration: .3f} seconds too slow)")
-        else:
-          print(f"({duration - seconds: .3f} seconds too fast)")
-        return
-      else:
-        hasStarted = True
-        startDate = datetime.now()
+  print(f"Elapsed time: {elapsed: .3f} seconds")
+  if duration == elapsed:
+    print("(Unbelievable! Perfect timing!)")
+  elif duration < elapsed:
+    print(f"({elapsed - duration: .3f} seconds too slow)")
+  else:
+    print(f"({duration - elapsed: .3f} seconds too fast)")
