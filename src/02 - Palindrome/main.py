@@ -2,20 +2,25 @@
 # gohangasalamiimalasgnahog is a palindrome
 
 def is_palindrome(string):
-  sanitizedString = ""
-  for char in string.lower():
-    if char.isalpha():
-      sanitizedString += char
-  
-  length = len(sanitizedString)
-  for i in range(length):
-    j = length - i - 1
+  i = 0
+  j = len(string) - 1
 
-    lhs = sanitizedString[i]
-    rhs = sanitizedString[j]
-    
-    if lhs != rhs:
-      print(False)
-      return
+  while i < j:
+    lhs = string[i]
+    rhs = string[j]
+
+    if not lhs.isalpha():
+      i += 1
+      continue
+
+    if not rhs.isalpha():
+      j -= 1
+      continue
+
+    if lhs.lower() != rhs.lower():
+      return False
+
+    i += 1
+    j -= 1
   
-  print(True)
+  return True
