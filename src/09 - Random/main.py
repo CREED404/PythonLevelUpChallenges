@@ -1,21 +1,20 @@
-import random
+from random import randint
+from collections import Counter
 
 def roll_dice(*args):
   attempts = 1_000_000
   lowerbound = len(args)
   upperbound = sum(args)
   
-  results = {}
-  for i in range(attempts):
-    rollSum = 0
-    for arg in args:
-      rollSum += random.randint(1, arg)
+  results = Counter()
+  for _ in range(attempts):
+    roll = (randint(1, arg) for arg in args)
+    rollSum = sum(roll)
     
-    results.setdefault(rollSum, 0)
     results[rollSum] += 1
   
   print("OUTCOME PROBABILITY")
   for i in range(lowerbound, upperbound + 1):
-    occurances = results.get(i, 0)
+    occurances = results[i]
     probability = occurances / attempts * 100
     print(f"{i}\t{probability: .2f}%")
