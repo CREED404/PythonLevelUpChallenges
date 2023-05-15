@@ -1,11 +1,8 @@
 import time
+from sched import scheduler
 
-def schedule_function(timestamp, function, message):
-  startTime = time.time()
-  duration = round(timestamp - startTime)
-
-  while duration > 0:
-    duration -= 1
-    time.sleep(1)
-  
-  function(message)
+def schedule_function(event_time, function, *args):
+  s = scheduler(time.time, time.sleep)
+  s.enterabs(event_time, 1, function, argument=args)
+  print(f"{function.__name__}() scheduled for {time.asctime(time.localtime(event_time))}")
+  s.run()
