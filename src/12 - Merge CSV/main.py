@@ -1,38 +1,23 @@
 import csv
 
 def merge_csv(input_array, output):
-  dict_array = []
-  all_headers = set()
+  all_headers = []
 
-  # Iterate for every input csv file
+  # Get all unique header values
   for filename in input_array:
     with open(filename, "r") as f:
-      # Convert CSV to list of dict
       reader = csv.DictReader(f)
-      dict = list(reader)
-      dict_array.append(dict)
+      all_headers.extend(h for h in reader.fieldnames if h not in all_headers)
 
-      # Collect all possible headers in a set
-      all_headers.update(dict[0].keys())
-  
-  combined_dict = []
-  # Iterate for every list
-  for array in dict_array:
-    # Find missing headers
-    current_headers = set(array[0].keys())
-    missing_headers = all_headers.symmetric_difference(current_headers)
-    
-    for dict in array:
-      # If any header missing, then add it with an empty value
-      for header in missing_headers:
-        dict[header] = ""
-
-      # Save it to single list
-      combined_dict.append(dict)
-  
-  # Write list to CSV
-  with open(output, "w") as f:
-    writer = csv.DictWriter(f, fieldnames=combined_dict[0].keys())
+  # Write on read; line-by-line
+  with open(output, "w") as output_file:
+    # Creates a csv with the specified headers
+    writer = csv.DictWriter(output_file, fieldnames=all_headers)
     writer.writeheader()
-    for row in combined_dict:
-      writer.writerow(row)
+
+    for filename in input_array:
+      with open(filename, "r") as input_file:
+        reader = csv.DictReader(input_file)
+        for row in reader:
+          # Writes to csv and handles missing headers automatically
+          writer.writerow(row)
