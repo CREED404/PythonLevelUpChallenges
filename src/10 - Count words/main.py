@@ -2,22 +2,16 @@ import re
 from collections import Counter
 
 def count_words(filename):
-  all_words = Counter()
-
   # Open file for reading
   with open(filename, "r") as file:
-    # Iterate line by line
-    for line in file:
-      # Find all words matching a regex
-      words = re.findall(r"[A-Za-z\d']+?\b", line, flags=re.IGNORECASE)
-      
-      # iterate through words & count it's occurance
-      all_words.update(word.upper() for word in words)
+    # Find all words matching a regex
+    all_words = re.findall(r"[A-Za-z\d']+?\b", file.read())
+    print(f"\nTotal Words: {len(all_words)}")
+    
+    word_counts = Counter(all_words)
   
-  # Get the top 20
-  filteredWords = all_words.most_common(20)
-
-  print(f"\nTotal Words: {len(all_words)}")
-  print("\nTop 20 Words:")
-  for word, count in filteredWords:
-    print(f"{word.ljust(16)}{count}")
+    # Get the top 20
+    filteredWords = word_counts.most_common(20)
+    print("\nTop 20 Words:")
+    for word, count in filteredWords:
+      print(f"{word.upper().ljust(16)}{count}")
