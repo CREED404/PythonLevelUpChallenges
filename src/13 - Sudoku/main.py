@@ -1,8 +1,17 @@
-from pprint import pprint
+def print_sudoku(puzzle):
+  for i, line in enumerate(puzzle):
+    formatted = []
+    for j, el in enumerate(line):
+      formatted.append("*" if el == 0 else str(el))
+      if j in [2,5]:
+        formatted.append("|")
+    print('  '.join(formatted))
+    if i in [2,5]:
+      print('-------------------------------')
 
 def solve_sudoku(puzzle):
   print("INPUT:")
-  pprint(puzzle)
+  print_sudoku(puzzle)
 
   # Find missing indices
   missing_indices = []
@@ -46,4 +55,4 @@ def solve_sudoku(puzzle):
       i = (i + 1) % len(missing_indices)
   
   print("OUTPUT:")
-  pprint(puzzle)
+  print_sudoku(puzzle)
