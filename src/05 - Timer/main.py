@@ -1,20 +1,16 @@
-from random import randint
 import time
+import random
 
 def waiting_game():
-  duration = randint(2,4)
-  print(f"Your target time is {duration} seconds")
-
-  input("---Press Enter to Begin---")
-  start = time.perf_counter()
-
-  input(f"...Press Enter again after {duration} seconds...")
-  elapsed = time.perf_counter() - start
-
-  print(f"Elapsed time: {elapsed: .3f} seconds")
-  if duration == elapsed:
-    print("(Unbelievable! Perfect timing!)")
-  elif duration < elapsed:
-    print(f"({elapsed - duration: .3f} seconds too slow)")
-  else:
-    print(f"({duration - elapsed: .3f} seconds too fast)")
+    timeToWait = random.randint(2, 4)
+    input(f"You target time is {timeToWait} seconds\n----Press Enter to Begin----")
+    ima = time.time()
+    input(f"Press Enter Again after {timeToWait} seconds...")
+    elapsed=time.time()-ima
+    if (elapsed-timeToWait) == 0:
+        satatus = "You were so Good!"
+    elif (elapsed-timeToWait) > 0:
+        satatus = "too slow"
+    else:
+        satatus = "too fast"
+    print(f"Elapsed time: {elapsed:.3f} seconds ({(elapsed-timeToWait):.3f} seconds {satatus})")
