@@ -1,7 +1,5 @@
-def sort_words(string):
-  words = string.split()
-  result = sorted(words, key=str.casefold)
-  return " ".join(result)
+def sort_words(string: str):
+    return " ".join(sorted(string.split(), key=lambda x: x.lower()))
 
 # Observations
 #
