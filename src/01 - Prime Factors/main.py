@@ -11,6 +11,7 @@ def allPrimesUpTo(num):
         else:
             #if number not in factorsList:
             factorsList.append(number)
+    return factorsList
 
 def get_prime_factors(num):
     if num == 1:
