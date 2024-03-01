@@ -1,9 +1,6 @@
 # Go hang a salami, I’m a lasagna hog.
 # gohangasalamiimalasgnahog is a palindrome
 
-import re
-
-def is_palindrome(string):
-  lhs = ''.join(re.findall(r'[a-z]', string.lower()))
-  rhs = lhs[::-1]
-  return lhs == rhs
+def isPalindrome(string: str):
+    string = "".join([x for x in string.lower() if x.isalpha()])
+    return string == "".join([string[i] for i in reversed(range(len(string)))])
