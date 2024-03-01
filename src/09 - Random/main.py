@@ -1,4 +1,5 @@
 from collections import defaultdict
+import random
 
 def roll_dice(*arg):
     number_of_tests = 1_000_000
