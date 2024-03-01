@@ -1,23 +1,19 @@
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email.message import EmailMessage
 
-def send_email(sender, password, receiver, subject, body):
-  email = MIMEMultipart()
-  email["From"] = sender
-  email["To"] = receiver
-  email["Subject"] = subject
+user_acc = "yourAcc@gmail.com"
+acc_passwd = "yourPassword"
+mail_server = "smtp.gmail.com"
+mail_port = 465
 
-  email.attach(MIMEText(body, "plain"))
-
-  raw = email.as_string()
-  print(raw)
-
-  try:
-    with smtplib.SMTP("smtp.gmail.com", 587) as server:
-      server.starttls()
-      server.login(sender, password)
-      server.sendmail(sender, receiver, raw)
-    print(f"Email sent successfully to {receiver}")
-  except smtplib.SMTPException as e:
-    print(e)
+def send_mail(receiver, subject, body):
+  
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg["Subject"] = subject
+    msg["From"]    = user_acc
+    msg["To"]      = receiver
+  
+    with smtplib.SMTP_SSL(mail_server, mail_port) as server:
+        server.login(user_acc, acc_passwd)
+        server.send_message(msg)
