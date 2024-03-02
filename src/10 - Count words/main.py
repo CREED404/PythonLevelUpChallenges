@@ -1,17 +1,15 @@
 import re
 from collections import Counter
 
-def count_words(filename):
-  # Open file for reading
-  with open(filename, "r") as file:
-    # Find all words matching a regex
-    all_words = re.findall(r"[A-Za-z\d']+?\b", file.read())
-    print(f"\nTotal Words: {len(all_words)}")
-    
-    word_counts = Counter(all_words)
-  
-    # Get the top 20
-    filteredWords = word_counts.most_common(20)
-    print("\nTop 20 Words:")
-    for word, count in filteredWords:
-      print(f"{word.upper().ljust(16)}{count}")
+def count_words(input_file):
+    with open(input_file, "r", encoding="utf-8") as f:
+        content=f.read()
+    count = Counter()
+    words_count = 0
+    for word in re.findall(r"[A-Za-z\d']+?\b", file.read()):
+        count[word.lower()] += 1
+        words_count += 1
+    print(f"Total words: {words_count}")
+    #print(list(count.keys()))
+    for w, c in list(sorted(count.items(), key=lambda x: x[1], reverse=True))[:20]:
+        print(f"{w}: {c}")
