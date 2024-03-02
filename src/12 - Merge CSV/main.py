@@ -1,23 +1,43 @@
-import csv
+def merge_csv(list_to_csvs: list[str]=["csv1.csv", "csv2.csv"], output_csv: str="output.csv"):
+    csvs = []
+    headers = []
+    columns=[]
+    
+    for path in list_to_csvs:
+        with open(path ,"r", encoding="utf-8") as f:
+            csvs.append([line for line in f.read().split("\n") if line])
+    
+    for csv in csvs:
+        headers.append({i:x for i ,x in enumerate(csv[0].split(","))})
+    headerToUse = list(set([name for header in headers for _, name in header.items()]))
+    
+    for header in headerToUse:
+        rows=[]
+        for csv_index, csv in enumerate(csvs):
+            for i in range(1,len(csv)):
+                row=csv[i].split(",")
+                found=False
+                for item_index, item in enumerate(row):
+                    if header == headers[csv_index][item_index]:
+                        found = True
+                        break
+                rows.append(item if item else None) if found else rows.append(None)          
+        columns.append(rows)
 
-def merge_csv(input_array, output):
-  all_headers = []
+    csv = ""
+    row_count = len(columns[0])
+    col_count = len(headerToUse)
 
-  # Get all unique header values
-  for filename in input_array:
-    with open(filename, "r") as f:
-      reader = csv.DictReader(f)
-      all_headers.extend(h for h in reader.fieldnames if h not in all_headers)
+    for i, header in enumerate(headerToUse):
+        csv+=f"{header}{"\n" if i == col_count-1 else ","}"
 
-  # Write on read; line-by-line
-  with open(output, "w") as output_file:
-    # Creates a csv with the specified headers
-    writer = csv.DictWriter(output_file, fieldnames=all_headers)
-    writer.writeheader()
+    for index, _ in enumerate(columns[0]):
+        for i in range(col_count):
+            csv += columns[i][index] if columns[i][index] else ""
+            if i == col_count-1:
+                csv+="\n" if index != row_count-1 else ""
+            else:
+                csv+=","
 
-    for filename in input_array:
-      with open(filename, "r") as input_file:
-        reader = csv.DictReader(input_file)
-        for row in reader:
-          # Writes to csv and handles missing headers automatically
-          writer.writerow(row)
+    with open(output_csv, "w", encoding="utf-8") as f:
+        f.write(csv)
