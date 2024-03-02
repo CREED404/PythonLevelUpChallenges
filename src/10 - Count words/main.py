@@ -6,7 +6,7 @@ def count_words(input_file):
         content=f.read()
     count = Counter()
     words_count = 0
-    for word in re.findall(r"[A-Za-z\d']+?\b", content())
+    for word in re.findall(r"[A-Za-z\d']+?\b", content)
         count[word.lower()] += 1
         words_count += 1
     print(f"Total words: {words_count}")
